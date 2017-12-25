@@ -47,6 +47,9 @@ class Noodle():
   def isPlaced(self):
     return bool(self.__pinLoc)
 
+  def isOwnNode(self, coord):
+    return self.__pinLoc[0] == coord[0] and self.__pinLoc[1] == coord[1]
+
   def getCurrentSquares(self):
     if bool(self.__pinLoc) == False:
       return None
@@ -54,4 +57,11 @@ class Noodle():
     for eachCoord in self.__orients[self.__currentOrient]:
       retList.append([eachCoord[0]+self.__pinLoc[0], \
                       eachCoord[1]+self.__pinLoc[1]])
+    return retList
+
+  def getSomeSquares(self, pinLoc, orient):
+    retList = []
+    for eachCoord in self.__orients[orient]:
+      retList.append([eachCoord[0]+pinLoc[0], \
+                      eachCoord[1]+pinLoc[1]])
     return retList
