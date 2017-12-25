@@ -1,17 +1,17 @@
 class Board():
 
   def __init__(self, pinList, size, noodleList):
-    self.pinList = pinList
-    self.size = size
-    self.noodleList = noodleList
+    self.__pinList = pinList
+    self.__size = size
+    self.__noodleList = noodleList
 
   def isPin(self, coord):
-    for eachPin in self.pinList:
+    for eachPin in self.__pinList:
       if coord[0] == eachPin[0] and coord[1] == eachPin[1]:
         return True
     return False
 
   def isInBounds(self, coord):
-    return coord[0]>=0 and coord[1]>=0 and coord[0]<self.size and coord[1]<self.size
+    return coord[0]>=0 and coord[1]>=0 and coord[0]<self.__size and coord[1]<self.__size
 
 
