@@ -33,6 +33,9 @@ class Noodle():
       tempM = tempM * Noodle.rotM
     return retL
 
+  def getPinLoc(self):
+    return self.__pinLoc
+
   def placePiece(self, pinLoc, orientation):
     self.__pinLoc = pinLoc
     self.__currentOrient = orientation
