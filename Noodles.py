@@ -13,6 +13,9 @@ class Noodle():
   def __init__(self, pieceShape, isSym):
     self.__pieceShape = pieceShape #2D array, see above
     self.__isSym = isSym #bool
+    self.__currentOrient = -1 #int ranging from 0 to 8
+    self.__orients = self.getPiecePossibilities()
+    self.__pinLoc = None
 
   # return a list of different piece orientations
   def getPiecePossibilities(self):
@@ -29,3 +32,22 @@ class Noodle():
       retL.append(tempM)
       tempM = tempM * Noodle.rotM
     return retL
+
+  def placePiece(self, pinLoc, orientation):
+    self.__pinLoc = pinLoc
+    self.__currentOrient = orientation
+
+  def unplacePiece(self):
+    self.__pinLoc = None
+    self.__currentOrient = -1
+
+  def isPlaced(self):
+    return bool(self.__pinLoc)
+
+  def getCurrentSquares(self):
+    if bool(self.__pinLoc) == False:
+      return None
+    retList = []
+    for eachCoord in self.__orients[self.__currentOrient]:
+      retList.append([eachCoord[0]+pinLoc[0], eachCoord[1]+pinLoc[1]])
+    return retList

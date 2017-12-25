@@ -1,3 +1,5 @@
+from Noodles import *
+
 class Board():
 
   def __init__(self, pinList, size, noodleList):
@@ -14,4 +16,13 @@ class Board():
   def isInBounds(self, coord):
     return coord[0]>=0 and coord[1]>=0 and coord[0]<self.__size and coord[1]<self.__size
 
+  # assumes nood is already placed
+  def collidesWithPiece(self, nood, coord):
+    for eachCoord in nood.getCurrentShape():
 
+
+  def hasCollisions(self, nood):
+    for eachN in noodleList:
+      if eachN.isPiecePlaced():
+        
+        
