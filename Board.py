@@ -10,7 +10,7 @@ class Board():
   def isPin(self, nood, coord):
     for eachPin in self.__pinList:
       if coord[0] == eachPin[0] and coord[1] == eachPin[1] and \
-          nood.getPinLoc()[0] != eachPin[0] and nood.getPinLoc()[1] != eachPin[1]
+          nood.getPinLoc()[0] != eachPin[0] and nood.getPinLoc()[1] != eachPin[1]:
         return True
     return False
 
@@ -22,7 +22,7 @@ class Board():
   # (assumes nood IS placed)
   # NOTE: MAKE SURE nood != the current coord
   def collidesWithPiece(self, nood, coord):
-    for eachCoord in nood.getCurrentShape():
+    for eachCoord in nood.getCurrentSquares():
       if eachCoord[0]==coord[0] and eachCoord[1]==coord[1]:
         return True
     return False
@@ -32,9 +32,9 @@ class Board():
     for eachN in noodleList:
       # let's hope this second bool expression is sufficient...
       if eachN.isPiecePlaced() and eachN != currentN:
-        for eachCoord in currentN.getCurrentShape():
-          if self.collidesWithPiece(eachN, coord) or self.isPin(currentN, coord) \
-               or self.isNotInBounds(coord):
+        for eachCoord in currentN.getCurrentSquares():
+          if self.collidesWithPiece(eachN, eachCoord) or self.isPin(currentN, eachCoord) \
+               or self.isNotInBounds(eachCoord):
             return True
     return False
         

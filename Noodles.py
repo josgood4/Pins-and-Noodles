@@ -22,14 +22,14 @@ class Noodle():
     retL = []
     tempM = self.__pieceShape
     for i in range(4):
-      retL.append(tempM)
+      retL.append(np.ndarray.tolist(tempM))
       tempM = tempM * Noodle.rotM
     if self.__isSym:
       return retL
 
     tempM = tempM * Noodle.reflM
     for i in range(4):
-      retL.append(tempM)
+      retL.append(np.ndarray.tolist(tempM))
       tempM = tempM * Noodle.rotM
     return retL
 
@@ -52,5 +52,6 @@ class Noodle():
       return None
     retList = []
     for eachCoord in self.__orients[self.__currentOrient]:
-      retList.append([eachCoord[0]+pinLoc[0], eachCoord[1]+pinLoc[1]])
+      retList.append([eachCoord[0]+self.__pinLoc[0], \
+                      eachCoord[1]+self.__pinLoc[1]])
     return retList
