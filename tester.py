@@ -2,27 +2,40 @@ from Noodles import *
 from Board import *
 import numpy as np
 
-tempM = np.matrix([[0,0],[0,1],[0,2],[1,2],[2,2]])
-print(tempM)
+t1 = np.matrix([[0,0],[0,1],[0,2],[1,2],[2,2]])
+##print(t1)
+n1 = Noodle(t1, False)
+##print(n1.getPiecePossibilities())
 
-n1 = Noodle(tempM, False)
-b1 = Board([[0,0]], 3, [n1])
+t2 = np.matrix([[0,0],[0,1],[1,0],[1,1]])
+n2 = Noodle(t2, True)
 
+b1 = Board([[0,0], [1,1]], 3, [n1, n2], [[0,0]])
 print(b1)
 
-print(n1.getPiecePossibilities())
+b1.tryToPlacePiece(n1, 0, 0)
+print(b1)
 
+for i in range(4):
+  b1.tryToPlacePiece(n2, 1, i)
+  print(b1)
+  b1.unplacePiece(n2, 1, i)
+
+b1.unplacePiece(n1, 0, 0)
+b1.unplacePiece(n2, 1, 3)
+print(b1)
+
+"""
 print("orientations:")
 for i in range(8):
   b1.tryToPlacePiece(n1, 0, i)
   print(b1)
   b1.unplacePiece(n1, 0, i)
   ##print(n1.getCurrentSquares())
-  #TODO: TEST collidesWithPiece, isPin 
-  """
-  for coord in n1.getCurrentSquares():
-    if b1.isNotInBounds(coord):
-      print("%d, %d is NOT in bounds" % (coord[0], coord[1]))
-    else: 
-      print("%d, %d IS in bounds" % (coord[0], coord[1]))
-  """
+  ##for coord in n1.getCurrentSquares():
+    ##if b1.isNotInBounds(coord):
+      ##print("%d, %d is NOT in bounds" % (coord[0], coord[1]))
+    ##else: 
+      ##print("%d, %d IS in bounds" % (coord[0], coord[1]))
+"""
+
