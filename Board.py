@@ -34,28 +34,28 @@ class Board():
   def tryToPlacePiece(self, nood, pinNum, orient):
     nood.placePiece(self.__pinList[pinNum], orient)
     for eachCoord in nood.getCurrentSquares():
-      print("checking %d, %d... " % (eachCoord[0], eachCoord[1]))
+      ##print("checking %d, %d... " % (eachCoord[0], eachCoord[1]))
       if self.isNotInBounds(eachCoord) or \
             self.__boolGrid[eachCoord[1]][eachCoord[0]] or \
             self.isPin(nood, eachCoord):
-        print("\tUH OH!")
-        print("\tnot in bounds? %s, boolGrid? %s, is pin? %s" %\
-              (self.isNotInBounds(eachCoord), \
-               self.__boolGrid[eachCoord[1]][eachCoord[0]], \
-               self.isPin(nood, eachCoord)))
+        ##print("\tUH OH!")
+        ##print("\tnot in bounds? %s, boolGrid? %s, is pin? %s" %\
+              ##(self.isNotInBounds(eachCoord), \
+               ##self.__boolGrid[eachCoord[1]][eachCoord[0]], \
+               ##self.isPin(nood, eachCoord)))
         self.unplacePieceUpTo(nood, pinNum, orient, eachCoord)
         return None
       else: 
-        print("\tgoooood...")
+        ##print("\tgoooood...")
         self.__boolGrid[eachCoord[1]][eachCoord[0]] = True 
-    return self.__pinList[pinNum]
+    return (nood, self.__pinList[pinNum], orient)
         
   def unplacePieceUpTo(self, nood, pinNum, orient, currentCoord):
     tempList = nood.getSomeSquares(self.__pinList[pinNum], orient)
     i = 0
     while tempList[i] != currentCoord and i<8:
       eachCoord = tempList[i]
-      print("cleaning up: %d, %d" % (eachCoord[0], eachCoord[1]))
+      ##print("cleaning up: %d, %d" % (eachCoord[0], eachCoord[1]))
       if not(self.isNotInBounds(eachCoord)):
         self.__boolGrid[eachCoord[1]][eachCoord[0]] = False
       i += 1
@@ -95,6 +95,37 @@ class Board():
           retStr += "_\t"
       retStr += "\n"
     return retStr
+
+  def __getSmallerList(self, list, idxToRmv):
+    return list[:idxToRmv] + list[idxToRmv+1:]
+
+  def __checkAllHelper(self, noodleList, pinList):
+    if len(noodleList)==0 and len(pinList)==0:
+      print("AHA!")
+      return (None, (-1,-1), -1)
+    result = []
+    for noodNum in range(len(noodleList)):
+      print("checking nood %d of %d" % (noodNum, len(noodleList)))
+      eachNood = noodleList[noodNum]
+      for pinNum in range(len(pinList)):
+        print("\tchecking pin %d of %d" % (pinNum, len(pinList)))
+        for eachOrient in range(4 if eachNood.getSym() else 8):
+          print("\t\tchecking orient %d of %d" % (eachOrient, 4 if eachNood.getSym() else 8))
+          didPlace = self.tryToPlacePiece(eachNood, pinNum, eachOrient)
+          print("\t\ttrying to place: %s" % (didPlace,))
+          if didPlace!=None:
+            print("\t\t\trecursing...")
+            temp = self.__checkAllHelper(self.__getSmallerList(noodleList,noodNum),\
+                                         self.__getSmallerList(pinList,pinNum))
+            if len(temp)>0 and temp[0]==None:
+              print("\t\t\t\tappending %s to list" % temp)
+              result.append(didPlace)
+    return result
+
+  def checkAll(self):
+    return self.__checkAllHelper(self.__noodleList, self.__pinList)
+     
+      
 
   """
   #TODO: TEST ME!!!!!

@@ -2,6 +2,16 @@ from Noodles import *
 from Board import *
 import numpy as np
 
+myL = [0,1,2,3,4,5]
+
+"""
+bn = Board([[]], 0)
+print(bn.getSmallerList(myL, 0))
+print(bn.getSmallerList(myL, 1))
+print(bn.getSmallerList(myL, 3))
+print(bn.getSmallerList(myL, 5))
+"""
+
 t1 = np.matrix([[0,0],[0,1],[0,2],[1,2],[2,2]])
 ##print(t1)
 n1 = Noodle(t1, False)

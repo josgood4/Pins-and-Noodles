@@ -17,6 +17,9 @@ class Noodle():
     self.__orients = self.getPiecePossibilities()
     self.__pinLoc = None
 
+  def getSym(self):
+    return self.__isSym
+
   # return a list of different piece orientations
   def getPiecePossibilities(self):
     retL = []
