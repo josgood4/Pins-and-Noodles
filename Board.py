@@ -96,12 +96,27 @@ class Board():
       retStr += "\n"
     return retStr
 
+  def __allPlaced(self):
+    for y in range(self.__size):
+      for x in range(self.__size):
+        if not(self.__boolGrid[y][x]) and \
+           not(self.__isHole((x,y))):
+          return False
+    return True
+    """
+    retBool = True
+    for eachNood in self.__noodleList:
+      print("\t\t\t\tis placed? %s" % eachNood.isPlaced())
+      retBool = retBool and eachNood.isPlaced()
+    return retBool
+    """
+
   def __getSmallerList(self, list, idxToRmv):
     return list[:idxToRmv] + list[idxToRmv+1:]
 
   def __checkAllHelper(self, noodleList, pinList):
     if len(noodleList)==0 and len(pinList)==0:
-      print("AHA!")
+      print("AHA! 1")
       return (None, (-1,-1), -1)
     result = []
     for noodNum in range(len(noodleList)):
@@ -114,12 +129,18 @@ class Board():
           didPlace = self.tryToPlacePiece(eachNood, pinNum, eachOrient)
           print("\t\ttrying to place: %s" % (didPlace,))
           if didPlace!=None:
+            if self.__allPlaced():
+              print("AHA! 2")
+              for eachPiece in self.__noodleList:
+                result.append((eachPiece, eachPiece.getPinLoc(), eachPiece.getCurrentOrient()))
             print("\t\t\trecursing...")
+            print(str(self) + "\nnumNoods=%d, numPins=%d" % (len(noodleList),len(pinList)))
             temp = self.__checkAllHelper(self.__getSmallerList(noodleList,noodNum),\
                                          self.__getSmallerList(pinList,pinNum))
-            if len(temp)>0 and temp[0]==None:
-              print("\t\t\t\tappending %s to list" % temp)
-              result.append(didPlace)
+            print("recursing returned %s", (temp,))
+            if temp!=[]:
+              result.append(temp)
+    print("returning: %s", (result,))
     return result
 
   def checkAll(self):
