@@ -14,15 +14,18 @@ print(bn.getSmallerList(myL, 5))
 
 t1 = np.matrix([[0,0],[0,1],[0,2],[1,2],[2,2]])
 ##print(t1)
-n1 = Noodle(t1, False)
+n1 = Noodle("n1", t1, False)
 ##print(n1.getPiecePossibilities())
 
 t2 = np.matrix([[0,0],[0,1],[1,0],[1,1]])
-n2 = Noodle(t2, True)
+n2 = Noodle("n2", t2, True)
 
-b1 = Board([[0,0], [1,1]], 3, [n1, n2], [[0,0]])
+b1 = Board([[0,0], [1,1]], 3, [n1, n2])
 print(b1)
 
+print(b1.checkAll())
+
+"""
 b1.tryToPlacePiece(n1, 0, 0)
 print(b1)
 
@@ -35,7 +38,6 @@ b1.unplacePiece(n1, 0, 0)
 b1.unplacePiece(n2, 1, 3)
 print(b1)
 
-"""
 print("orientations:")
 for i in range(8):
   b1.tryToPlacePiece(n1, 0, i)

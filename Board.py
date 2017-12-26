@@ -10,6 +10,7 @@ class Board():
     for i in range(size):
       self.__boolGrid.append([False] * size)
     self.__holeList = [] if holeList==None else holeList 
+    self.__solutionSet = []
 
   def getBools(self):
     return self.__boolGrid
@@ -53,7 +54,7 @@ class Board():
   def unplacePieceUpTo(self, nood, pinNum, orient, currentCoord):
     tempList = nood.getSomeSquares(self.__pinList[pinNum], orient)
     i = 0
-    while tempList[i] != currentCoord and i<8:
+    while tempList[i] != currentCoord and i<len(tempList):
       eachCoord = tempList[i]
       ##print("cleaning up: %d, %d" % (eachCoord[0], eachCoord[1]))
       if not(self.isNotInBounds(eachCoord)):
@@ -116,38 +117,34 @@ class Board():
 
   def __checkAllHelper(self, noodleList, pinList):
     if len(noodleList)==0 and len(pinList)==0:
-      print("AHA! 1")
-      return (None, (-1,-1), -1)
+      return [None]
     result = []
     for noodNum in range(len(noodleList)):
-      print("checking nood %d of %d" % (noodNum, len(noodleList)))
       eachNood = noodleList[noodNum]
       for pinNum in range(len(pinList)):
-        print("\tchecking pin %d of %d" % (pinNum, len(pinList)))
         for eachOrient in range(4 if eachNood.getSym() else 8):
-          print("\t\tchecking orient %d of %d" % (eachOrient, 4 if eachNood.getSym() else 8))
+          ##print("checking nood %d of %d" % (noodNum, len(noodleList)))
+          ##print("\tchecking pin %d of %d" % (pinNum, len(pinList)))
+          ##print("\t\tchecking orient %d of %d" % (eachOrient, 4 if eachNood.getSym() else 8))
           didPlace = self.tryToPlacePiece(eachNood, pinNum, eachOrient)
-          print("\t\ttrying to place: %s" % (didPlace,))
+          ##print("\t\ttrying to place: %s" % (didPlace,))
           if didPlace!=None:
             if self.__allPlaced():
-              print("AHA! 2")
               for eachPiece in self.__noodleList:
-                result.append((eachPiece, eachPiece.getPinLoc(), eachPiece.getCurrentOrient()))
-            print("\t\t\trecursing...")
-            print(str(self) + "\nnumNoods=%d, numPins=%d" % (len(noodleList),len(pinList)))
-            temp = self.__checkAllHelper(self.__getSmallerList(noodleList,noodNum),\
+                result.append((eachPiece.getName(), eachPiece.getPinLoc(), eachPiece.getCurrentOrient()))
+            ##print("\t\t\trecursing...")
+            ##print(str(self) + "\nnumNoods=%d, numPins=%d" % (len(noodleList),len(pinList)))
+            result += self.__checkAllHelper(\
+                                         self.__getSmallerList(noodleList,noodNum),\
                                          self.__getSmallerList(pinList,pinNum))
-            print("recursing returned %s", (temp,))
-            if temp!=[]:
-              result.append(temp)
-    print("returning: %s", (result,))
+            ##print("recursing returned %s", (return,))
+            self.unplacePiece(eachNood, pinNum, eachOrient)
+    ##print("returning: %s", (result,))
     return result
 
   def checkAll(self):
     return self.__checkAllHelper(self.__noodleList, self.__pinList)
      
-      
-
   """
   #TODO: TEST ME!!!!!
   # checks if coord collides with nood

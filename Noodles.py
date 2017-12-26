@@ -10,12 +10,16 @@ class Noodle():
   #   each [xi, yi] representing the positions 
   #   relative to [0,0] that the piece covers up
   # NOTE: [0,0] is always pinPos
-  def __init__(self, pieceShape, isSym):
+  def __init__(self, name, pieceShape, isSym):
+    self.__name = name
     self.__pieceShape = pieceShape #2D array, see above
     self.__isSym = isSym #bool
     self.__currentOrient = -1 #int ranging from 0 to 8
     self.__orients = self.getPiecePossibilities()
     self.__pinLoc = None
+
+  def getName(self):
+    return self.__name
 
   def getSym(self):
     return self.__isSym
