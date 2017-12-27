@@ -30,6 +30,8 @@ print(b1.checkAll())
 stop = timeit.default_timer()
 
 runTime = stop - start
-numIters = b1.getNumIters()
+numIters = b1.getIterProgress()
 
+print("run time: %d" % runTime)
+print("number of iterations: %d" % numIters)
 print("iterations/second: %d" % (numIters/runTime))

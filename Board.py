@@ -13,16 +13,16 @@ class Board():
       self.__boolGrid.append([False] * size)
     self.__holeList = [] if holeList==None else holeList 
     self.__solutionSet = []
-
     self.__numIters = 1
-    self.__iterProgress = 0
-    self.__nextBar = 0
 
   def getBools(self):
     return self.__boolGrid
 
   def getNoodleList(self):
     return self.__noodleList
+
+  def getIterProgress(self):
+    return self.__iterProgress
 
 #####################################################################
 ############################   BOOLS   ##############################
@@ -126,16 +126,6 @@ class Board():
     return list[:idxToRmv] + list[idxToRmv+1:]
 
   def __checkAllHelper(self, noodleList):
-    """
-    if (self.__iterProgress/self.__numIters) >= (self.__nextBar/BAR_SIZE):
-      print("%d/%d=%d" % (self.__iterProgress, self.__numIters, \
-                          self.__iterProgress/self.__numIters))
-      print("[" + ("#"*int(self.__iterProgress/self.__numIters*BAR_SIZE))
-                + (" "*int((1-self.__iterProgress/self.__numIters)*BAR_SIZE)) + "]")
-      self.__nextBar += 1
-    """
-    for eachNood in noodleList:
-      print(eachNood.getName())
     result = []
     # base case
     if len(noodleList)==0 and self.__allPlaced():
@@ -150,17 +140,17 @@ class Board():
         self.__iterProgress += 1
         didPlace = self.tryToPlacePiece(eachNood, pinNum, eachOrient)
         if didPlace!=None:
-          print("testing&recursing w/o %s @ (%d,%d) in orient %d {" % (eachNood.getName(), \
-               self.__pinList[pinNum][0], self.__pinList[pinNum][1], eachOrient))
+          ##print("testing&recursing w/o %s @ (%d,%d) in orient %d {" % (eachNood.getName(), \
+               ##self.__pinList[pinNum][0], self.__pinList[pinNum][1], eachOrient))
           result += self.__checkAllHelper(noodleList[1:])
-          print("\n}")
+          ##print("\n}")
           self.unplacePiece(eachNood, pinNum, eachOrient)
     return result
 
   def checkAll(self):
     self.__iterProgress = 0
-    self.__nextBar = 0
-    self.getNumIters()
+    self.sortByNumPlaces()
+    ##self.getNumIters()
     return self.__checkAllHelper(self.__noodleList)
  
                           ################
@@ -190,12 +180,14 @@ class Board():
         print("%s: pin %d, orient %d" % (eachNood.getName(), \
               eachPlace[0], eachPlace[1]))
 
+  """
   def getNumIters(self):
     self.sortByNumPlaces()
     self.__numIters = 1
     for eachNood in self.__noodleList:
       self.__numIters *= eachNood.numPossPlaces
     return self.__numIters
+  """
 
   def isPinOccupied(self, pinNum):
     result = False
