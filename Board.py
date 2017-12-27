@@ -42,7 +42,7 @@ class Board():
     if self.__holeList!=None:
       for eachCoord in self.__holeList:
         if coord[0]==eachCoord[0] and coord[1]==eachCoord[1]:
-          retBool = retBool or True
+          retBool = True
     return retBool
 
   def __isPinJustCoordCheck(self, coord):
@@ -125,7 +125,7 @@ class Board():
   def __getSmallerList(self, list, idxToRmv):
     return list[:idxToRmv] + list[idxToRmv+1:]
 
-  def __checkAllHelper(self, noodleList, pinList):
+  def __checkAllHelper(self, noodleList):
     """
     if (self.__iterProgress/self.__numIters) >= (self.__nextBar/BAR_SIZE):
       print("%d/%d=%d" % (self.__iterProgress, self.__numIters, \
@@ -134,7 +134,8 @@ class Board():
                 + (" "*int((1-self.__iterProgress/self.__numIters)*BAR_SIZE)) + "]")
       self.__nextBar += 1
     """
-
+    for eachNood in noodleList:
+      print(eachNood.getName())
     result = []
     # base case
     if len(noodleList)==0 and self.__allPlaced():
@@ -143,26 +144,24 @@ class Board():
       result.append(None)
       return result
     # recursive case
-    for noodNum in range(len(noodleList)):
-      eachNood = noodleList[noodNum]
-      for (pinNum,eachOrient) in eachNood.possPlacements:
-        if not(self.isPinOccupied(pinNum)):
-          print("testing %s @ (%d,%d) in orient %d" % (eachNood.getName(), \
-                 self.__pinList[pinNum][0], self.__pinList[pinNum][1], eachOrient))
-          self.__iterProgress += 1
-          didPlace = self.tryToPlacePiece(eachNood, pinNum, eachOrient)
-          if didPlace!=None:
-            result += self.__checkAllHelper(\
-                                       self.__getSmallerList(noodleList,noodNum),\
-                                       self.__pinList)
-            self.unplacePiece(eachNood, pinNum, eachOrient)
+    eachNood = noodleList[0]
+    for (pinNum,eachOrient) in eachNood.possPlacements:
+      if not(self.isPinOccupied(pinNum)):
+        self.__iterProgress += 1
+        didPlace = self.tryToPlacePiece(eachNood, pinNum, eachOrient)
+        if didPlace!=None:
+          print("testing&recursing w/o %s @ (%d,%d) in orient %d {" % (eachNood.getName(), \
+               self.__pinList[pinNum][0], self.__pinList[pinNum][1], eachOrient))
+          result += self.__checkAllHelper(noodleList[1:])
+          print("\n}")
+          self.unplacePiece(eachNood, pinNum, eachOrient)
     return result
 
   def checkAll(self):
     self.__iterProgress = 0
     self.__nextBar = 0
     self.getNumIters()
-    return self.__checkAllHelper(self.__noodleList, self.__pinList)
+    return self.__checkAllHelper(self.__noodleList)
  
                           ################
                           # OPTIMIZATION #
