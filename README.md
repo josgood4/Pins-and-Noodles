@@ -68,5 +68,81 @@ o	_	_	_	_	o	_	_
  b1.checkAll()
  ```
  
- ## Example File
-  Run `puzzleModel.py` to see the results of the original model.
+### Understanding the Output
+  Running `puzzleModel.py` produces the following output:
+  ```
+[('n12', (0, 7), 0), ('n08', (3, 5), 0), ('n04', (6, 0), 0), ('n11', (7, 4), 0), ('n01', (0, 2), 0), ('n03', (2, 3), 0), ('n07', (0, 4), 0), ('n10', (5, 7), 0), ('n05', (7, 0), 0), ('n02', (2, 1), 0), ('n06', (7, 3), 0), ('n09', (5, 4), 0), None]
+run time: 33
+number of iterations: 972161
+iterations/second: 29284
+  ```
+  Each item in the list contains the following information: `(<noodle name>, <pin location>, <orientation>)`
+  - `<noodle name>` is the name given to the noodle
+  - `<pin location>` is the location of the pin on which the noodle sits
+  - `<orientation>` is a number 0 through 7, where 0 is the original orientation of the piece as entered, 0-3 represent the original orientation rotated 90 degrees clockwise (0-3) times, and orientation 4 represents orientation 3 reflected about the y axis, and orientations 4-7 represent the orientation 4 rotated 90 degrees clockwise (0-3) times.
+  
+    Whew! That was a lot. See the following examples for visual representations of this.
+  <details>
+ <summary>Orientation Examples</summary>
+ 
+  orientation 0:
+ ```
+        __
+  _____|  |__
+ |   ________|
+ |<>|
+ ```
+ 
+  orientation 1:
+ ```
+  _____
+ |<>   |__
+    |   __|
+    |__|
+ ```
+ 
+   orientation 2:
+ ```
+  ______|<>|
+ |__    ___|
+    |__|
+ ```
+ 
+   orientation 3:
+ ```
+     __
+  __|  |
+ |__   |__
+    |___<>|
+ ```
+ 
+   orientation 4:
+ ```
+     __
+    |  |__
+  __|   __|
+ |<> __|
+ ```
+
+   orientation 5:
+ ```
+ |<>|______
+ |__    ___|
+    |__|
+ ```
+  orientation 6:
+ ```
+     _____
+  __|   <>|
+ |__   |
+    |__|
+ ```
+   orientation 7:
+ ```
+     __
+  __|  |__
+ |_____   |
+       |<>|
+ ```
+</details>
+  
