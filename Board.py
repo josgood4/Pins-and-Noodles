@@ -1,5 +1,7 @@
 from Noodles import *
 
+BAR_SIZE = 50
+
 class Board():
 
   def __init__(self, pinList, size, noodleList=None, holeList=None):
@@ -12,8 +14,15 @@ class Board():
     self.__holeList = [] if holeList==None else holeList 
     self.__solutionSet = []
 
+    self.__numIters = 1
+    self.__iterProgress = 0
+    self.__nextBar = 0
+
   def getBools(self):
     return self.__boolGrid
+
+  def getNoodleList(self):
+    return self.__noodleList
 
 #####################################################################
 ############################   BOOLS   ##############################
@@ -117,58 +126,87 @@ class Board():
     return list[:idxToRmv] + list[idxToRmv+1:]
 
   def __checkAllHelper(self, noodleList, pinList):
-    if len(noodleList)==0 and len(pinList)==0:
-      return [None]
+    """
+    if (self.__iterProgress/self.__numIters) >= (self.__nextBar/BAR_SIZE):
+      print("%d/%d=%d" % (self.__iterProgress, self.__numIters, \
+                          self.__iterProgress/self.__numIters))
+      print("[" + ("#"*int(self.__iterProgress/self.__numIters*BAR_SIZE))
+                + (" "*int((1-self.__iterProgress/self.__numIters)*BAR_SIZE)) + "]")
+      self.__nextBar += 1
+    """
+
     result = []
+    # base case
+    if len(noodleList)==0 and self.__allPlaced():
+      for eachNood in self.__noodleList:
+        result.append((eachNood.getName(), eachNood.getPinLoc(), eachNood.getCurrentOrient()))
+      result.append(None)
+      return result
+    # recursive case
     for noodNum in range(len(noodleList)):
       eachNood = noodleList[noodNum]
-      for pinNum in range(len(pinList)):
-        for eachOrient in range(4 if eachNood.getSym() else 8):
-          ##print("checking nood %d of %d" % (noodNum, len(noodleList)))
-          ##print("\tchecking pin %d of %d" % (pinNum, len(pinList)))
-          ##print("\t\tchecking orient %d of %d" % (eachOrient, 4 if eachNood.getSym() else 8))
+      for (pinNum,eachOrient) in eachNood.possPlacements:
+        if not(self.isPinOccupied(pinNum)):
+          print("testing %s @ (%d,%d) in orient %d" % (eachNood.getName(), \
+                 self.__pinList[pinNum][0], self.__pinList[pinNum][1], eachOrient))
+          self.__iterProgress += 1
           didPlace = self.tryToPlacePiece(eachNood, pinNum, eachOrient)
-          ##print("\t\ttrying to place: %s" % (didPlace,))
           if didPlace!=None:
-            if self.__allPlaced():
-              for eachPiece in self.__noodleList:
-                result.append((eachPiece.getName(), eachPiece.getPinLoc(), eachPiece.getCurrentOrient()))
-            ##print("\t\t\trecursing...")
-            ##print(str(self) + "\nnumNoods=%d, numPins=%d" % (len(noodleList),len(pinList)))
             result += self.__checkAllHelper(\
-                                         self.__getSmallerList(noodleList,noodNum),\
-                                         self.__getSmallerList(pinList,pinNum))
-            ##print("recursing returned %s", (return,))
+                                       self.__getSmallerList(noodleList,noodNum),\
+                                       self.__pinList)
             self.unplacePiece(eachNood, pinNum, eachOrient)
-    ##print("returning: %s", (result,))
     return result
 
   def checkAll(self):
+    self.__iterProgress = 0
+    self.__nextBar = 0
+    self.getNumIters()
     return self.__checkAllHelper(self.__noodleList, self.__pinList)
  
                           ################
                           # OPTIMIZATION #
                           ################
 
-  def setNumPossPlaces(self):
+  def setPossPlaces(self):
     for eachNood in self.__noodleList:
       eachNood.numPossPlaces = 0
+      eachNood.possPlacements = []
       for pinNum in range(len(self.__pinList)):
         for eachOrient in range(4 if eachNood.getSym() else 8):
           if self.tryToPlacePiece(eachNood, pinNum, eachOrient) != None:
             eachNood.numPossPlaces += 1
+            eachNood.possPlacements.append((pinNum, eachOrient))
             self.unplacePiece(eachNood, pinNum, eachOrient)
-        
-  def printNumPossPlaces(self):
-    self.setNumPossPlaces()
-    for eachNood in self.__noodleList:
-      print(eachNood.getName() + ": " + str(eachNood.numPossPlaces))
-        
+
   def sortByNumPlaces(self):
-    self.setNumPossPlaces()
+    self.setPossPlaces()
     self.__noodleList = sorted(self.__noodleList, \
                                key=lambda noodle: noodle.numPossPlaces) 
 
+  def printPossPlaces(self):
+    self.sortByNumPlaces()
+    for eachNood in self.__noodleList:
+      for eachPlace in eachNood.possPlacements:
+        print("%s: pin %d, orient %d" % (eachNood.getName(), \
+              eachPlace[0], eachPlace[1]))
+
+  def getNumIters(self):
+    self.sortByNumPlaces()
+    self.__numIters = 1
+    for eachNood in self.__noodleList:
+      self.__numIters *= eachNood.numPossPlaces
+    return self.__numIters
+
+  def isPinOccupied(self, pinNum):
+    result = False
+    pinTup = self.__pinList[pinNum]
+    for eachNood in self.__noodleList:
+      if eachNood.getPinLoc()!=None and \
+         eachNood.getPinLoc()[0]==pinTup[0] and eachNood.getPinLoc()[1]==pinTup[1]:
+        result = True
+    return result
+     
 #####################################################################
 ###########################  TO_STRING  #############################
 #####################################################################

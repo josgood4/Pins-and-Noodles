@@ -20,6 +20,7 @@ class Noodle():
     #number of possible places a piece can be put on a board,
     #  when it is ONLY that piece on the board
     self.numPossPlaces = 0
+    self.possPlacements = [] #entries of form (pinNum, orient)
 
   def getName(self):
     return self.__name
