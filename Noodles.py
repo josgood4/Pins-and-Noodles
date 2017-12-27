@@ -27,6 +27,26 @@ class Noodle():
   def getSym(self):
     return self.__isSym
 
+  def getPinLoc(self):
+    return self.__pinLoc
+
+  def getCurrentOrient(self):
+    return self.__currentOrient
+
+  def isPlaced(self):
+    return bool(self.__pinLoc)
+
+  def isOwnNode(self, coord):
+    return self.__pinLoc[0] == coord[0] and self.__pinLoc[1] == coord[1]
+
+  def placePiece(self, pinLoc, orientation):
+    self.__pinLoc = pinLoc
+    self.__currentOrient = orientation
+
+  def unplacePiece(self):
+    self.__pinLoc = None
+    self.__currentOrient = -1
+
   # return a list of different piece orientations
   def getPiecePossibilities(self):
     retL = []
@@ -42,26 +62,6 @@ class Noodle():
       retL.append(np.ndarray.tolist(tempM))
       tempM = tempM * Noodle.rotM
     return retL
-
-  def getPinLoc(self):
-    return self.__pinLoc
-
-  def getCurrentOrient(self):
-    return self.__currentOrient
-
-  def placePiece(self, pinLoc, orientation):
-    self.__pinLoc = pinLoc
-    self.__currentOrient = orientation
-
-  def unplacePiece(self):
-    self.__pinLoc = None
-    self.__currentOrient = -1
-
-  def isPlaced(self):
-    return bool(self.__pinLoc)
-
-  def isOwnNode(self, coord):
-    return self.__pinLoc[0] == coord[0] and self.__pinLoc[1] == coord[1]
 
   def getCurrentSquares(self):
     if bool(self.__pinLoc) == False:
