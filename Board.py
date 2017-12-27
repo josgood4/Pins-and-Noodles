@@ -128,7 +128,8 @@ class Board():
   def __checkAllHelper(self, noodleList):
     result = []
     # base case
-    if len(noodleList)==0 and self.__allPlaced():
+    if len(noodleList)==0:
+      print("base case!")
       for eachNood in self.__noodleList:
         result.append((eachNood.getName(), eachNood.getPinLoc(), eachNood.getCurrentOrient()))
       result.append(None)
@@ -149,8 +150,7 @@ class Board():
 
   def checkAll(self):
     self.__iterProgress = 0
-    self.sortByNumPlaces()
-    ##self.getNumIters()
+    self.getNumIters()
     return self.__checkAllHelper(self.__noodleList)
  
                           ################
@@ -180,14 +180,12 @@ class Board():
         print("%s: pin %d, orient %d" % (eachNood.getName(), \
               eachPlace[0], eachPlace[1]))
 
-  """
   def getNumIters(self):
     self.sortByNumPlaces()
     self.__numIters = 1
     for eachNood in self.__noodleList:
       self.__numIters *= eachNood.numPossPlaces
     return self.__numIters
-  """
 
   def isPinOccupied(self, pinNum):
     result = False
