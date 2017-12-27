@@ -15,6 +15,10 @@ class Board():
   def getBools(self):
     return self.__boolGrid
 
+#####################################################################
+############################   BOOLS   ##############################
+#####################################################################
+
   def isPin(self, nood, coord):
     for eachPin in self.__pinList:
       if coord[0] == eachPin[0] and coord[1] == eachPin[1] and \
@@ -31,7 +35,29 @@ class Board():
         if coord[0]==eachCoord[0] and coord[1]==eachCoord[1]:
           retBool = retBool or True
     return retBool
-        
+
+  def __isPinJustCoordCheck(self, coord):
+    for eachPin in self.__pinList:
+      if coord[0] == eachPin[0] and coord[1] == eachPin[1]:
+        return True
+    return False
+
+  def __isHole(self, coord):
+    if self.__holeList == None:
+      return False
+    for eachCoord in self.__holeList:
+      if coord[0] == eachCoord[0] and coord[1] == eachCoord[1]:
+        return True
+    return False
+
+#####################################################################
+############################   LOGIC   ##############################
+#####################################################################
+
+                           #############
+                           #(UN)PLACING#
+                           #############
+
   def tryToPlacePiece(self, nood, pinNum, orient):
     nood.placePiece(self.__pinList[pinNum], orient)
     for eachCoord in nood.getCurrentSquares():
@@ -68,34 +94,9 @@ class Board():
         self.__boolGrid[eachCoord[1]][eachCoord[0]] = False
     nood.unplacePiece()
 
-  def __isPinJustCoordCheck(self, coord):
-    for eachPin in self.__pinList:
-      if coord[0] == eachPin[0] and coord[1] == eachPin[1]:
-        return True
-    return False
-
-  def __isHole(self, coord):
-    if self.__holeList == None:
-      return False
-    for eachCoord in self.__holeList:
-      if coord[0] == eachCoord[0] and coord[1] == eachCoord[1]:
-        return True
-    return False
-
-  def __str__(self):
-    retStr = ""
-    for y in range(self.__size):
-      for x in range(self.__size):
-        if self.__isHole((x,y)):
-          retStr += " \t"
-        elif self.__isPinJustCoordCheck((x,y)):
-          retStr += "o\t"
-        elif self.__boolGrid[y][x]:
-          retStr += "X\t"
-        else:
-          retStr += "_\t"
-      retStr += "\n"
-    return retStr
+                      ##########################
+                      # CHECKING POSSIBILITIES #
+                      ##########################
 
   def __allPlaced(self):
     for y in range(self.__size):
@@ -144,7 +145,49 @@ class Board():
 
   def checkAll(self):
     return self.__checkAllHelper(self.__noodleList, self.__pinList)
-     
+ 
+                          ################
+                          # OPTIMIZATION #
+                          ################
+
+  def setNumPossPlaces(self):
+    for eachNood in self.__noodleList:
+      eachNood.numPossPlaces = 0
+      for pinNum in range(len(self.__pinList)):
+        for eachOrient in range(4 if eachNood.getSym() else 8):
+          if self.tryToPlacePiece(eachNood, pinNum, eachOrient) != None:
+            eachNood.numPossPlaces += 1
+            self.unplacePiece(eachNood, pinNum, eachOrient)
+        
+  def printNumPossPlaces(self):
+    self.setNumPossPlaces()
+    for eachNood in self.__noodleList:
+      print(eachNood.getName() + ": " + str(eachNood.numPossPlaces))
+        
+  def sortByNumPlaces(self):
+    self.setNumPossPlaces()
+    self.__noodleList = sorted(self.__noodleList, \
+                               key=lambda noodle: noodle.numPossPlaces) 
+
+#####################################################################
+###########################  TO_STRING  #############################
+#####################################################################
+                          
+  def __str__(self):
+    retStr = ""
+    for y in range(self.__size):
+      for x in range(self.__size):
+        if self.__isHole((x,y)):
+          retStr += " \t"
+        elif self.__isPinJustCoordCheck((x,y)):
+          retStr += "o\t"
+        elif self.__boolGrid[y][x]:
+          retStr += "X\t"
+        else:
+          retStr += "_\t"
+      retStr += "\n"
+    return retStr
+   
   """
   #TODO: TEST ME!!!!!
   # checks if coord collides with nood

@@ -17,6 +17,9 @@ class Noodle():
     self.__currentOrient = -1 #int ranging from 0 to 8
     self.__orients = self.getPiecePossibilities()
     self.__pinLoc = None
+    #number of possible places a piece can be put on a board,
+    #  when it is ONLY that piece on the board
+    self.numPossPlaces = 0
 
   def getName(self):
     return self.__name
