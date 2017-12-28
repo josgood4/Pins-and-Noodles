@@ -40,7 +40,7 @@ In order for a combination to work, all of the following conditions must be met:
         (+y)
   ```
   
-  For example, the `Noodle` below (where `<>` represents the `Noodle`'s hole, which is also the origin)  would be initialized like this: `n = Noodle("n", np.matrix([(0,0),(0,-1),(1,-1),(2,-1),(2,-2),(3,-1)]), False)`
+  For example, the `Noodle` below (where `<>` represents the `Noodle`'s hole, which is also the `Noodle`'s origin)  would be initialized like this: `n = Noodle("n", np.matrix([(0,0),(0,-1),(1,-1),(2,-1),(2,-2),(3,-1)]), False)`
  ```
         __ 
   _____|  |__ 
