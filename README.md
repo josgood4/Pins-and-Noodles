@@ -1,4 +1,8 @@
 # Pins-and-Noodles
+## TL;DR
+
+Run [the example file puzzleModel.py](puzzleModel.py), which simulates [the board pictured here](pins%20and%20noodles.jpg). Then read [this last section](#understanding-the-output) to interpret the output. Remember to install Numpy first.
+
 ## Intro
 
 Inspired by [this project](pins%20and%20noodles.jpg), this repository brute forces the different combinations of `Noodles` on the various `pins` of a `Board` to produce a list of the working combinations.
@@ -9,6 +13,8 @@ In order for a combination to work, all of the following conditions must be met:
  - No noodle can be overlapping another noodle
  - No noodle can fall on a pin other than the one on which it rests
  - Every non-hole square of the board must be covered by a noodle
+ 
+ NOTE: **Requires Numpy** (for matrix multiplication). Any version should do, tested with Numpy 1.13.0 and Python 3.5.
  
  ## Use
  
