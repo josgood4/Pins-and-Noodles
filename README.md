@@ -28,6 +28,7 @@ In order for a combination to work, all of the following conditions must be met:
  from Board import *
  import numpy as np
  ```
+ **Requires Numpy**
  ### Noodles
  
  Next, define a `Noodle`:
