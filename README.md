@@ -28,12 +28,24 @@ In order for a combination to work, all of the following conditions must be met:
  ```
   - `<name>` is `n1`'s name.
  
-  - `<np.matrix()>` is, for example, `np.matrix([(x1,y1), ... , (xn,yn)])`. It represents the coordinates of each square relative to the location of the pin hole. In other words, the pin hole represents the origin and every other square's coordinate corresponds to the (x,y) positions of the square relative to the hole. It is important to note that **the positive x-axis points to the right** and **the positive y-axis points down**. For example, the `Noodle` below (where `<>` represents the `Noodle`'s hole)  would be initialized like this: `n = Noodle("n", np.matrix([(0,0),(0,-1),(1,-1),(2,-1),(2,-2),(3,-1)]), False)`
+  - `<np.matrix()>` is, for example, `np.matrix([(x1,y1), ... , (xn,yn)])`. It represents the coordinates of each square relative to the location of the pin hole. In other words, the pin hole represents the origin and every other square's coordinate corresponds to the (x,y) positions of the square relative to the hole. 
+  
+  It is important to note that **the positive x-axis points to the right** and **the positive y-axis points down**. 
+  
+  ```
+        (-y)
+         ^
+(-x) <-+-> (+x)
+         v
+        (+y)
+  ```
+  
+  For example, the `Noodle` below (where `<>` represents the `Noodle`'s hole)  would be initialized like this: `n = Noodle("n", np.matrix([(0,0),(0,-1),(1,-1),(2,-1),(2,-2),(3,-1)]), False)`
  ```
-        __
-  _____|  |__
+        __ 
+  _____|  |__ 
  |   ________|
- |<>|
+ |<>| 
  ```
  
   - `<isSym>` is `True` if the piece is "symmetrical" in the sense that it can be rotated into the exact same position after flipping it upside-down. If this is not the case, `<isSym>` should be `False`.
