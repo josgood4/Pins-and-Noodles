@@ -1,7 +1,9 @@
 # Pins-and-Noodles
 ## TL;DR
 
-Run [the example file puzzleModel.py](puzzleModel.py), which simulates [the board pictured here](pins%20and%20noodles.jpg). Then read [this last section](#understanding-the-output) to interpret the output. Remember to install Numpy first.
+Run [the example file puzzleModel.py](puzzleModel.py), which simulates [the board pictured here](pins%20and%20noodles.jpg). Then read [this last section](#understanding-the-output) to interpret the output. (Spoiler alert: it only has one solution). 
+
+Remember to install Numpy first.
 
 ## Intro
 
