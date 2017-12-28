@@ -94,7 +94,7 @@ run time: 33
 number of iterations: 972161
 iterations/second: 29284
   ```
-  There is only one set of answers in the list (each set of answers ends with `None`), so this means that the `Board` has only one unique solution.
+  There is only one set of answers in the list (each set of answers ends with `None`), so this means that the `Board` has only **one unique solution**.
   
   Each item in the list contains the following information: `(<noodle name>, <pin location>, <orientation>)`
   - `<noodle name>` is the name given to the noodle
