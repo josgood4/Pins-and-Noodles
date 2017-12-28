@@ -129,7 +129,7 @@ class Board():
     result = []
     # base case
     if len(noodleList)==0:
-      print("base case!")
+      ##print("base case!")
       for eachNood in self.__noodleList:
         result.append((eachNood.getName(), eachNood.getPinLoc(), eachNood.getCurrentOrient()))
       result.append(None)

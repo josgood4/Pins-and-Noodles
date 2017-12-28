@@ -24,6 +24,8 @@ pins = [(6,0),(7,0),(2,1),(0,2),(2,3),(7,3),(0,4),(5,4),(7,4),(3,5),(0,7),(5,7)]
 
 b1 = Board(pins, 8, noods, holes)
 
+##print(b1)
+
 """
 #known solution:
 b1.tryToPlacePiece(n01, 3, 0)
