@@ -1,13 +1,15 @@
 # Pins-and-Noodles
 ## TL;DR
 
-Run [the example file puzzleModel.py](puzzleModel.py), which simulates [the board pictured here](pins%20and%20noodles.jpg). Then read [this last section](#understanding-the-output) to interpret the output. (Spoiler alert: it only has one solution). 
+Run [the example file puzzleModel.py](puzzleModel.py), which simulates the board pictured below. Then read [this last section](#understanding-the-output) to interpret the output. (Spoiler alert: it only has one solution). 
 
 Remember to install Numpy first.
 
 ## Intro
 
-Inspired by [this project](pins%20and%20noodles.jpg), this repository brute forces the different combinations of `Noodles` on the various `pins` of a `Board` to produce a list of the working combinations.
+Inspired by the project pictured below, this repository brute forces the different combinations of `Noodles` on the various `pins` of a `Board` to produce a list of the working combinations.
+
+![this project](pins%20and%20noodles.jpg)
 
 In order for a combination to work, all of the following conditions must be met:
  - No noodle can be sticking "out of bounds" 
